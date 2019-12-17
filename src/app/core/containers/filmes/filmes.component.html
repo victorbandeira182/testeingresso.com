@@ -1,0 +1,61 @@
+<nav class="navbar navbar-expand-lg darkerNavbar sticky-top">
+	<div class="container">
+		<div class="collapse navbar-collapse">
+			<img src="../assets/ingressoLogo.PNG"/>
+			<div class="navbar-nav ml-auto">
+				<!-- Barra de Busca de Seleção de Região -->
+				<input [(ngModel)]="filtroFilme.value"  type="text" placeholder="Busque um Filme" class="input-dark p-2">
+				<select (change)="changeRegion($event.target.value)" class="custom-select selectRegiao pr-5">
+					<option *ngFor="let cidade of cidades" [value]="cidade.id">{{cidade.cidade}}</option>
+				</select>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<main>
+	<section class="container">
+		<div class="row mt-4 mb-5">
+			<div class="col">
+				<!-- Renderiza as opções dos filmes -->
+				<div class="filterTypes">
+					<div *ngFor="let filtro of filtros ">
+						<input type="checkbox" [(ngModel)]="filtro.value" (ngModelChange)="filtrar()" ><b class="colorFilterTypes">{{filtro.label}}</b>
+					</div>
+				</div>
+				<div class="inTheaters">
+					<div class="display-4 text-light"> Filmes em Cartaz {{cidadeAtual}}:</div>
+				</div>
+			</div>
+			<div class="col-auto mt-auto ml-auto">
+
+			</div>
+		</div>
+		<div class="row">
+			<span id="arrow-left"><</span>
+			<div id="wrap-scroll">
+				<div id="modules">
+					<ng-container *ngFor="let filme of filmes | filterBy: ['event.title']: filtroFilme.value">
+						<div class="cardMovies link cardCartaz m-3" (click)="getTrailer(filme.event.id)">
+							<div class="cardMovieImg"><img [src]="filme.event.images[0].url"></div>
+							<div class="wrapHover p-2">
+								<div class="cardTitleHoverable">
+									<span class="cardMovieInside">{{filme.event.title}}</span>
+									<div class="small mt-1">
+										<ng-container *ngFor="let genero of filme.event.genres;index as i">
+											<div class="boxGenre">{{genero}}</div>
+										</ng-container>
+										<div class="boxDetails" *ngIf="filme.event.contentRating !== 'Verifique a Classificação'">{{filme.event.contentRating}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<span id="arrow-right">></span>
+		</div>
+	</section>
+
+
+</main>
